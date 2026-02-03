@@ -14,7 +14,7 @@
 ### Структура страницы
 **Одна страница, одна секция:**
 - `page.tsx` → только ApartmentPool
-- Весь сайт — схема квартир с переключением секций
+- Весь сайт — схема квартир с переключением секций и просмотром чертежей
 
 ### Компоненты
 - `ApartmentPool.tsx` — единственная секция (self-contained)
@@ -24,9 +24,10 @@
 
 ### Основные файлы
 - **Данные**: `/data/apartments.ts` → FloorPlan[] (сгенерированы из чертежей)
+- **Чертежи**: `/data/apartments.ts` → sectionImages (маппинг файлов к секциям)
 - **Типы**: `/types/apartment.ts` → Apartment, FloorPlan, Section, ApartmentClass
 - **Логика**: `/components/ApartmentPool.tsx`
-- **Чертежи**: `/plan-zdaniya/schemaImages/*.png` (22 плана)
+- **Чертежи (файлы)**: `/public/schemaImages/*.png` (22 плана, копия из `/plan-zdaniya/`)
 - **Контекст**: `/plan-zdaniya/context.md` (разбор чертежей)
 
 ### Ключевые типы
@@ -39,6 +40,12 @@ type ApartmentStatus = "free" | "sold"
 
 // Все 12 секций здания
 type Section = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "10" | "11" | "12"
+
+// Маппинг чертежей
+interface SectionImages {
+  firstFloor: string;   // путь к плану 1 этажа
+  typicalFloor: string; // путь к плану типового этажа
+}
 
 interface Apartment {
   id: string;           // format: "section-floor-number" e.g., "1-5-3"
@@ -82,6 +89,11 @@ interface FloorPlan {
 - Активная секция подсвечена
 - Указание типа (5 кв. / 6 кв.)
 
+### Чертежи секции
+- Показаны сразу под фильтрами (2 thumbnails)
+- Клик на thumbnail → открывает fullscreen preview
+- Preview: затемнённый фон, увеличенное изображение, крестик для закрытия
+
 ### Статистика (3 колонки)
 - Всего квартир (голубой border)
 - Свободно (зелёный border)
@@ -104,7 +116,12 @@ interface FloorPlan {
 - Классы (А, Б, В, Г) определяются по позиции и площади
 - Автоматический расчёт цены: area × 130000
 
-### 2. Бронирование (localStorage)
+### 2. Чертежи
+- Файлы копируются из `/plan-zdaniya/schemaImages/` в `/public/schemaImages/`
+- Маппинг секция → файлы хранится в `sectionImages`
+- Thumbnails (300px height) + fullscreen preview
+
+### 3. Бронирование (localStorage)
 ```typescript
 localStorage.setItem("apartmentPurchases", JSON.stringify({ "1-5-3": "Иван" }))
 ```
@@ -112,7 +129,7 @@ localStorage.setItem("apartmentPurchases", JSON.stringify({ "1-5-3": "Иван" 
 - Значение: имя забронировавшего
 - Привязка к браузеру пользователя
 
-### 3. Статус логика
+### 4. Статус логика
 ```typescript
 const status = purchases[apt.id] ? "my" : apt.status;
 // "my" → красный с именем
@@ -127,7 +144,14 @@ const status = purchases[apt.id] ? "my" : apt.status;
 2. `selectedSection` = "2"
 3. `floorOptions` → обновляется список этажей (1-15)
 4. `filteredFloors` → пересчитывается
-5. UI показывает новые квартиры
+5. UI показывает новые квартиры и чертежи
+
+### Просмотр чертежей
+1. Чертежи показаны сразу (thumbnail, 300px height)
+2. User кликает на thumbnail
+3. `selectedSchema` = "firstFloor" | "typicalFloor"
+4. Открывается модалка с увеличенным изображением
+5. Клик вне изображения или крестик → закрытие
 
 ### Бронирование
 1. User кликает зелёную квартиру → `handleApartmentClick()`

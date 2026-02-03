@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { apartmentsData, buildingConfig, sectionStats } from "@/data/apartments";
+import { apartmentsData, buildingConfig, sectionStats, sectionImages } from "@/data/apartments";
 import { Apartment, ApartmentStatus, Section } from "@/types/apartment";
 import { Button } from "@/components/ui/Button";
 import { Building2, Home, User, Check, X } from "lucide-react";
@@ -13,6 +13,7 @@ export function ApartmentPool() {
   const [selectedFloor, setSelectedFloor] = useState<number | "all">("all");
   const [selectedStatus, setSelectedStatus] = useState<"all" | "free" | "sold">("all");
   const [selectedApartment, setSelectedApartment] = useState<Apartment | null>(null);
+  const [selectedSchema, setSelectedSchema] = useState<"firstFloor" | "typicalFloor" | null>(null);
   const [showNameForm, setShowNameForm] = useState(false);
   const [buyerName, setBuyerName] = useState("");
   const [isClient, setIsClient] = useState(false);
@@ -236,6 +237,48 @@ export function ApartmentPool() {
           </div>
         </div>
 
+        {/* Чертежи секции */}
+        <div className="bg-white rounded-lg p-4 mb-6 shadow-sm">
+          <h3 className="font-bold text-lg flex items-center gap-2 mb-4">
+            <Building2 className="w-5 h-5 text-gray-500" />
+            Архитектурные чертежи секции {selectedSection}
+          </h3>
+          
+          <div className="grid md:grid-cols-2 gap-4">
+            {/* План 1 этажа */}
+            <button
+              onClick={() => setSelectedSchema("firstFloor")}
+              className="border rounded-lg overflow-hidden hover:ring-2 hover:ring-primary-500 transition-all"
+            >
+              <div className="bg-gray-100 px-3 py-2 text-sm font-medium text-gray-700 border-b text-left">
+                План 1 этажа
+              </div>
+              <img
+                src={sectionImages[selectedSection].firstFloor}
+                alt={`Секция ${selectedSection} - План 1 этажа`}
+                className="w-full h-auto object-contain bg-white cursor-pointer"
+                style={{ maxHeight: "300px" }}
+              />
+            </button>
+            
+            {/* План типового этажа */}
+            <button
+              onClick={() => setSelectedSchema("typicalFloor")}
+              className="border rounded-lg overflow-hidden hover:ring-2 hover:ring-primary-500 transition-all"
+            >
+              <div className="bg-gray-100 px-3 py-2 text-sm font-medium text-gray-700 border-b text-left">
+                План типового этажа (2-15)
+              </div>
+              <img
+                src={sectionImages[selectedSection].typicalFloor}
+                alt={`Секция ${selectedSection} - Типовой этаж`}
+                className="w-full h-auto object-contain bg-white cursor-pointer"
+                style={{ maxHeight: "300px" }}
+              />
+            </button>
+          </div>
+        </div>
+
         {/* Этажи */}
         <div className="grid gap-6">
           {filteredFloors.map(floor => (
@@ -419,6 +462,32 @@ export function ApartmentPool() {
                   Квартира недоступна для бронирования
                 </div>
               )}
+            </div>
+          </div>
+        )}
+
+        {/* Preview чертежа */}
+        {selectedSchema && (
+          <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4" onClick={() => setSelectedSchema(null)}>
+            <div className="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-auto" onClick={e => e.stopPropagation()}>
+              <div className="flex justify-between items-center p-4 border-b">
+                <h3 className="font-bold text-lg">
+                  {selectedSchema === "firstFloor" ? "План 1 этажа" : "План типового этажа (2-15)"} • Секция {selectedSection}
+                </h3>
+                <button
+                  onClick={() => setSelectedSchema(null)}
+                  className="text-gray-400 hover:text-gray-600 text-2xl leading-none"
+                >
+                  ×
+                </button>
+              </div>
+              <img
+                src={selectedSchema === "firstFloor" 
+                  ? sectionImages[selectedSection].firstFloor 
+                  : sectionImages[selectedSection].typicalFloor}
+                alt={`Секция ${selectedSection} - ${selectedSchema === "firstFloor" ? "План 1 этажа" : "Типовой этаж"}`}
+                className="w-full h-auto object-contain"
+              />
             </div>
           </div>
         )}

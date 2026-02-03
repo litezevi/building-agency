@@ -2,6 +2,22 @@ import { FloorPlan, Section } from "@/types/apartment";
 
 const PRICE_PER_SQM = 130000; // ₽ за м²
 
+// Маппинг изображений чертежей к секциям
+export const sectionImages: Record<Section, { firstFloor: string; typicalFloor: string }> = {
+  "1": { firstFloor: "/schemaImages/Plan zdaniya-01.png", typicalFloor: "/schemaImages/Plan zdaniya-02.png" },
+  "2": { firstFloor: "/schemaImages/Plan zdaniya-03.png", typicalFloor: "/schemaImages/Plan zdaniya-04.png" },
+  "3": { firstFloor: "/schemaImages/Plan zdaniya-07.png", typicalFloor: "/schemaImages/Plan zdaniya-08.png" },
+  "4": { firstFloor: "/schemaImages/Plan zdaniya-05.png", typicalFloor: "/schemaImages/Plan zdaniya-06.png" },
+  "5": { firstFloor: "/schemaImages/Plan zdaniya-05.png", typicalFloor: "/schemaImages/Plan zdaniya-06.png" },
+  "6": { firstFloor: "/schemaImages/Plan zdaniya-09.png", typicalFloor: "/schemaImages/Plan zdaniya-10.png" },
+  "7": { firstFloor: "/schemaImages/Plan zdaniya-11.png", typicalFloor: "/schemaImages/Plan zdaniya-12.png" },
+  "8": { firstFloor: "/schemaImages/Plan zdaniya-13.png", typicalFloor: "/schemaImages/Plan zdaniya-14.png" },
+  "9": { firstFloor: "/schemaImages/Plan zdaniya-15.png", typicalFloor: "/schemaImages/Plan zdaniya-16.png" },
+  "10": { firstFloor: "/schemaImages/Plan zdaniya-17.png", typicalFloor: "/schemaImages/Plan zdaniya-18.png" },
+  "11": { firstFloor: "/schemaImages/Plan zdaniya-19.png", typicalFloor: "/schemaImages/Plan zdaniya-20.png" },
+  "12": { firstFloor: "/schemaImages/Plan zdaniya-21.png", typicalFloor: "/schemaImages/Plan zdaniya-22.png" },
+};
+
 // Площади квартир по типам (из реальных чертежей)
 const APARTMENT_TYPES = {
   // 2-комнатные квартиры
