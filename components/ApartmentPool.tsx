@@ -299,9 +299,7 @@ export function ApartmentPool() {
               </div>
 
               {/* Квартиры */}
-              <div className="grid gap-3" style={{
-                gridTemplateColumns: `repeat(${floor.apartments.length}, minmax(0, 1fr))`
-              }}>
+              <div className="grid gap-3 grid-cols-2 md:grid-cols-3 lg:grid-cols-5 lg:grid-cols-6">
                 {floor.apartments.map((apt) => {
                   const buyer = purchases[apt.id];
                   const status = getDisplayStatus(apt);
@@ -312,13 +310,13 @@ export function ApartmentPool() {
                       key={apt.id}
                       onClick={() => handleApartmentClick(apt.id)}
                       className={cn(
-                        "p-3 rounded-lg text-white text-center transition-all cursor-pointer hover:shadow-lg hover:scale-105",
+                        "p-2 md:p-3 rounded-lg text-white text-center transition-all cursor-pointer hover:shadow-lg hover:scale-105",
                         status === "free" && "bg-green-500 hover:bg-green-600",
                         status === "sold" && "bg-red-500 hover:bg-red-600",
                         status === "my" && "bg-red-600 border-2 border-red-300"
                       )}
-                    >
-                      <div className="font-bold text-lg">№{apt.number}</div>
+                      >
+                        <div className="font-bold text-base md:text-lg">№{apt.number}</div>
                       <div className="text-xs opacity-90">{apt.rooms}кн • {apt.area}м²</div>
                       <div className="text-sm font-medium mt-1">
                         {status === "my" ? buyer : (isSold ? "Занято" : "Свободно")}
