@@ -103,10 +103,6 @@ export function ApartmentPool() {
       .sort((a, b) => a - b);
   }, [selectedSection]);
 
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("ru-RU").format(price) + " ₽";
-  };
-
   const handleApartmentClick = (apartmentId: string) => {
     const apt = apartmentsData.flatMap(f => f.apartments).find(a => a.id === apartmentId);
     if (apt) {
@@ -379,12 +375,6 @@ export function ApartmentPool() {
                 <div className="flex justify-between py-2 border-b">
                   <span className="text-gray-600">Площадь кухни</span>
                   <span className="font-medium">{selectedApartment.kitchenArea} м²</span>
-                </div>
-                <div className="flex justify-between py-2 border-b">
-                  <span className="text-gray-600">Цена</span>
-                  <span className="font-bold text-lg text-primary-600">
-                    {formatPrice(selectedApartment.price)}
-                  </span>
                 </div>
                 <div className="flex justify-between py-2 border-b">
                   <span className="text-gray-600">Статус</span>
