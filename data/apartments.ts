@@ -98,7 +98,7 @@ function createNarrowSectionFloor(section: Section, floor: number, firstFloor: b
 // План этажа для широкой секции (6 квартир: 2 x 2-комн + 4 x 1-комн)
 function createWideSectionFloor(section: Section, floor: number, firstFloor: boolean): FloorPlan {
   const apartments = [];
-  
+
   if (firstFloor) {
     // Первый этаж: 6 квартир по реальному плану
     apartments.push(createApartment(section, floor, "1", "2Д-81"));
@@ -116,41 +116,76 @@ function createWideSectionFloor(section: Section, floor: number, firstFloor: boo
     apartments.push(createApartment(section, floor, "5", "2Б-74"));
     apartments.push(createApartment(section, floor, "6", "1Б-53"));
   }
-  
+
+  return { floor, section, apartments };
+}
+
+// План этажа для блока 4/5 (8 квартир: двойная секция с двумя лифтами)
+function createBlock45Floor(section: Section, floor: number, firstFloor: boolean): FloorPlan {
+  const apartments = [];
+
+  if (firstFloor) {
+    // Первый этаж: 8 квартир по Plan zdaniya-05
+    apartments.push(createApartment(section, floor, "1", "2Д-81"));
+    apartments.push(createApartment(section, floor, "2", "1Б-53"));
+    apartments.push(createApartment(section, floor, "3", "1Б-53"));
+    apartments.push(createApartment(section, floor, "4", "2Е-80"));
+    apartments.push(createApartment(section, floor, "5", "2Г-74"));
+    apartments.push(createApartment(section, floor, "6", "1Б-53"));
+    apartments.push(createApartment(section, floor, "7", "2Д-81"));
+    apartments.push(createApartment(section, floor, "8", "1Б-53"));
+  } else {
+    // Типовые этажи: 8 квартир по Plan zdaniya-06
+    apartments.push(createApartment(section, floor, "1", "2Д-81"));
+    apartments.push(createApartment(section, floor, "2", "1Б-53"));
+    apartments.push(createApartment(section, floor, "3", "1Б-53"));
+    apartments.push(createApartment(section, floor, "4", "2Е-80"));
+    apartments.push(createApartment(section, floor, "5", "2Б-74"));
+    apartments.push(createApartment(section, floor, "6", "1Б-53"));
+    apartments.push(createApartment(section, floor, "7", "2Д-81"));
+    apartments.push(createApartment(section, floor, "8", "1Б-53"));
+  }
+
   return { floor, section, apartments };
 }
 
 // Генерация данных для секции
-function generateSectionData(section: Section, isWide: boolean): FloorPlan[] {
+function generateSectionData(section: Section, type: "narrow" | "wide" | "block45"): FloorPlan[] {
   const floors: FloorPlan[] = [];
-  
+
   for (let floor = 1; floor <= 15; floor++) {
     const isFirstFloor = floor === 1;
-    floors.push(isWide ? createWideSectionFloor(section, floor, isFirstFloor) : createNarrowSectionFloor(section, floor, isFirstFloor));
+    if (type === "narrow") {
+      floors.push(createNarrowSectionFloor(section, floor, isFirstFloor));
+    } else if (type === "wide") {
+      floors.push(createWideSectionFloor(section, floor, isFirstFloor));
+    } else {
+      floors.push(createBlock45Floor(section, floor, isFirstFloor));
+    }
   }
-  
+
   return floors;
 }
 
-// Типы секций по конфигурации
-const SECTION_CONFIG: { section: Section; isWide: boolean }[] = [
-  { section: "1", isWide: false },  // Узкая (5 кв)
-  { section: "2", isWide: true },   // Широкая (6 кв)
-  { section: "3", isWide: true },   // Широкая (6 кв)
-  { section: "4", isWide: true },   // Широкая (6 кв) - Блок 4/5
-  { section: "5", isWide: true },   // Широкая (6 кв) - Блок 4/5
-  { section: "6", isWide: false },  // Узкая (5 кв)
-  { section: "7", isWide: true },   // Широкая (6 кв)
-  { section: "8", isWide: true },   // Широкая (6 кв)
-  { section: "9", isWide: false },  // Узкая (5 кв)
-  { section: "10", isWide: false }, // Узкая (5 кв)
-  { section: "11", isWide: true },  // Широкая (6 кв)
-  { section: "12", isWide: true },  // Широкая (6 кв)
+// Типы секций по конфигурации (из context.md)
+const SECTION_CONFIG: { section: Section; type: "narrow" | "wide" | "block45" }[] = [
+  { section: "1", type: "narrow" },  // Узкая (5 кв) - Plan 01/02
+  { section: "2", type: "wide" },    // Широкая (6 кв) - Plan 03/04
+  { section: "3", type: "wide" },    // Широкая (6 кв) - Plan 07/08
+  { section: "4", type: "block45" }, // Блок 4/5 (8 кв) - Plan 05/06
+  { section: "5", type: "block45" }, // Блок 4/5 (8 кв) - Plan 05/06
+  { section: "6", type: "narrow" },  // Узкая (5 кв) - Plan 09/10
+  { section: "7", type: "wide" },    // Широкая (6 кв) - Plan 11/12
+  { section: "8", type: "wide" },    // Широкая (6 кв) - Plan 13/14
+  { section: "9", type: "narrow" },  // Узкая (5 кв) - Plan 15/16
+  { section: "10", type: "narrow" }, // Узкая (5 кв) - Plan 17/18
+  { section: "11", type: "wide" },   // Широкая (6 кв) - Plan 19/20
+  { section: "12", type: "wide" },   // Широкая (6 кв) - Plan 21/22
 ];
 
 // Генерация всех данных
-export const apartmentsData: FloorPlan[] = SECTION_CONFIG.flatMap(({ section, isWide }) =>
-  generateSectionData(section, isWide)
+export const apartmentsData: FloorPlan[] = SECTION_CONFIG.flatMap(({ section, type }) =>
+  generateSectionData(section, type)
 );
 
 // Конфигурация здания
@@ -159,24 +194,27 @@ export const buildingConfig = {
   sections: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"] as const,
   sectionTypes: {
     narrow: ["1", "6", "9", "10"] as const, // 5 квартир/этаж
-    wide: ["2", "3", "4", "5", "7", "8", "11", "12"] as const, // 6 квартир/этаж
+    wide: ["2", "3", "7", "8", "11", "12"] as const, // 6 квартир/этаж
+    block45: ["4", "5"] as const, // 8 квартир/этаж (двойная секция)
   },
   pricePerSqm: PRICE_PER_SQM,
   totalApartments: apartmentsData.reduce((sum, floor) => sum + floor.apartments.length, 0),
 };
 
 // Статистика по секциям
-export const sectionStats = SECTION_CONFIG.map(({ section, isWide }) => {
+export const sectionStats = SECTION_CONFIG.map(({ section, type }) => {
   const sectionFloors = apartmentsData.filter((f) => f.section === section);
   const totalApartments = sectionFloors.reduce((sum, f) => sum + f.apartments.length, 0);
   const freeApartments = sectionFloors.reduce(
     (sum, f) => sum + f.apartments.filter((a) => a.status === "free").length,
     0
   );
-  
+
+  const typeLabel = type === "narrow" ? "Узкая (5 кв.)" : type === "block45" ? "Блок 4/5 (8 кв.)" : "Широкая (6 кв.)";
+
   return {
     section,
-    type: isWide ? "Широкая (6 кв.)" : "Узкая (5 кв.)",
+    type: typeLabel,
     total: totalApartments,
     free: freeApartments,
     sold: totalApartments - freeApartments,

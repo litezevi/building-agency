@@ -54,17 +54,20 @@
 1. План 1 этажа (входная группа, тамбуры)
 2. План типового этажа (2-15) (жилые квартиры с лоджиями)
 
-Маппинг файлов:
-| Секция | 1 этаж | Типовой |
-|--------|--------|---------|
-| 1 | 01.png | 02.png |
-| 2 | 03.png | 04.png |
-| 3 | 07.png | 08.png |
-| 4/5 | 05.png | 06.png |
-| 6 | 09.png | 10.png |
-| 7 | 11.png | 12.png |
-| 8 | 13.png | 14.png |
-| 9 | 15.png | 16.png |
-| 10 | 17.png | 18.png |
-| 11 | 19.png | 20.png |
-| 12 | 21.png | 22.png |
+Маппинг файлов (полные имена из папки schemaImages):
+| Секция | 1 этаж | Типовой | Квартир/этаж |
+|--------|--------|---------|--------------|
+| 1 | Plan zdaniya-01.png | Plan zdaniya-02.png | 5 |
+| 2 | Plan zdaniya-03.png | Plan zdaniya-04.png | 6 |
+| 3 | Plan zdaniya-07.png | Plan zdaniya-08.png | 6 |
+| 4 | Plan zdaniya-05.png | Plan zdaniya-06.png | 8 |
+| 5 | Plan zdaniya-05.png | Plan zdaniya-06.png | 8 |
+| 6 | Plan zdaniya-09.png | Plan zdaniya-10.png | 5 |
+| 7 | Plan zdaniya-11.png | Plan zdaniya-12.png | 6 |
+| 8 | Plan zdaniya-13.png | Plan zdaniya-14.png | 6 |
+| 9 | Plan zdaniya-15.png | Plan zdaniya-16.png | 5 |
+| 10 | Plan zdaniya-17.png | Plan zdaniya-18.png | 5 |
+| 11 | Plan zdaniya-19.png | Plan zdaniya-20.png | 6 |
+| 12 | Plan zdaniya-21.png | Plan zdaniya-22.png | 6 |
+
+Примечание: Секции 4 и 5 используют один тип чертежей (с 8 квартирами).

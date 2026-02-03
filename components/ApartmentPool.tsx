@@ -141,7 +141,12 @@ export function ApartmentPool() {
           </div>
           <div className="flex flex-wrap gap-2">
             {buildingConfig.sections.map(section => {
-              const isWide = buildingConfig.sectionTypes.wide.includes(section as any);
+              const sectionType = buildingConfig.sectionTypes.narrow.includes(section as any)
+                ? "narrow"
+                : buildingConfig.sectionTypes.block45.includes(section as any)
+                ? "block45"
+                : "wide";
+              const typeLabel = sectionType === "narrow" ? "5 кв." : sectionType === "block45" ? "8 кв." : "6 кв.";
               return (
                 <button
                   key={section}
@@ -158,7 +163,7 @@ export function ApartmentPool() {
                 >
                   Секция {section}
                   <span className="ml-1 text-xs opacity-75">
-                    ({isWide ? "6 кв." : "5 кв."})
+                    ({typeLabel})
                   </span>
                 </button>
               );
