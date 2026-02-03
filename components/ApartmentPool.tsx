@@ -289,11 +289,6 @@ export function ApartmentPool() {
                 </div>
               </div>
 
-              {/* Коридор */}
-              <div className="bg-gray-200 h-10 rounded-lg mb-4 flex items-center justify-center text-sm text-gray-600 font-medium">
-                Коридор
-              </div>
-
               {/* Квартиры */}
               <div className="grid gap-3 grid-cols-2 md:grid-cols-3 lg:grid-cols-5 lg:grid-cols-6">
                 {floor.apartments.map((apt) => {
