@@ -238,48 +238,6 @@ export function ApartmentPool() {
           </div>
         </div>
 
-        {/* Чертежи секции */}
-        <div className="bg-white rounded-lg p-4 mb-6 shadow-sm">
-          <h3 className="font-bold text-lg flex items-center gap-2 mb-4">
-            <Building2 className="w-5 h-5 text-gray-500" />
-            Архитектурные чертежи секции {selectedSection}
-          </h3>
-          
-          <div className="grid md:grid-cols-2 gap-4">
-            {/* План 1 этажа */}
-            <button
-              onClick={() => setSelectedSchema("firstFloor")}
-              className="border rounded-lg overflow-hidden hover:ring-2 hover:ring-primary-500 transition-all"
-            >
-              <div className="bg-gray-100 px-3 py-2 text-sm font-medium text-gray-700 border-b text-left">
-                План 1 этажа
-              </div>
-              <img
-                src={sectionImages[selectedSection].firstFloor}
-                alt={`Секция ${selectedSection} - План 1 этажа`}
-                className="w-full h-auto object-contain bg-white cursor-pointer"
-                style={{ maxHeight: "300px" }}
-              />
-            </button>
-            
-            {/* План типового этажа */}
-            <button
-              onClick={() => setSelectedSchema("typicalFloor")}
-              className="border rounded-lg overflow-hidden hover:ring-2 hover:ring-primary-500 transition-all"
-            >
-              <div className="bg-gray-100 px-3 py-2 text-sm font-medium text-gray-700 border-b text-left">
-                План типового этажа (2-15)
-              </div>
-              <img
-                src={sectionImages[selectedSection].typicalFloor}
-                alt={`Секция ${selectedSection} - Типовой этаж`}
-                className="w-full h-auto object-contain bg-white cursor-pointer"
-                style={{ maxHeight: "300px" }}
-              />
-            </button>
-          </div>
-        </div>
-
         {/* Этажи */}
         <div className="grid gap-6">
           {filteredFloors.map(floor => (
